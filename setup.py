@@ -9,7 +9,7 @@ setup( name='ciscomapper',
   keywords='cisco cdp network browser',
   license='Apache License, Version 2.0',
   dependency_links=[
-    "git+ssh://git@github.com/sergeyzelyukin/cisco-telnet.git"
+    "git+ssh://git@github.com/sergeyzelyukin/cisco-telnet/tarball/master"
   ],
   classifiers=[
   'Programming Language :: Python',
