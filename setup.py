@@ -10,7 +10,7 @@ setup( name='ciscomapper',
   license='Apache License, Version 2.0',
   install_requires = [
     'ciscotelnet @ git+ssh://git@github.com/sergeyzelyukin/cisco-telnet',
-  ]
+  ],
   classifiers=[
   'Programming Language :: Python',
   'Programming Language :: Python :: 2',
