@@ -1,6 +1,12 @@
 # cisco-mapper
 Draw the scheme of your cisco network, all you need is telnet access and cdp enabled
 
+First of all, please, install "ciscotelnet" module:
+<pre>
+pip install git+https://github.com/sergeyzelyukin/cisco-telnet.git
+</pre>
+Now you can use this module.
+
 Calling "browse_cisco_network()" function, you will finally have a dictionary like:
 <pre>
 dictionary1["CAT111222"]["hostname"]	= "R1"

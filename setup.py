@@ -8,11 +8,8 @@ setup( name='ciscomapper',
   maintainer_email='sergey.zelyukin@gmail.com',
   keywords='cisco cdp network browser',
   license='Apache License, Version 2.0',
-  install_requires=[
-    "ciscotelnet>=0.1.1"
-  ],
   dependency_links=[
-    "git+https://github.com/sergeyzelyukin/cisco-telnet.git#egg=ciscotelnet-0.1.4"
+    "git+https://github.com/sergeyzelyukin/cisco-telnet.git#egg=ciscotelnet"
   ],
   classifiers=[
   'Programming Language :: Python',
