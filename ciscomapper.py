@@ -8,6 +8,7 @@ def from_string(s):
   """Functions to convert IPv4 address to integer and vice-versa.
   Written by Christian Stigen Larsen, http://csl.sublevel3.org
   Placed in the public domain by the author, 2012-01-11 
+  https://gist.github.com/cslarsen/1595135
   """
   return reduce(lambda a,b: a<<8 | b, map(int, s.split(".")))
 
