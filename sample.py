@@ -25,9 +25,13 @@ if __name__ == "__main__":
     auth_choices = yaml.load(fh)
 
   # run sometimes to be updated with network scheme 
-  devices_map = {} 
+  devices_map = {} # when browse_cisco_network() ends, this dictionary will be filled with the cisco devices and their hierarchy
   try:
-    browse_cisco_network("10.100.1.9", devices_map, [], auth_choices, max_deep=3)
+    browse_cisco_network("10.100.1.9", devices_map, [], auth_choices) # will start browsing, with no limits in depts, and will print scheme while discovering new devices
+    # or
+    browse_cisco_network("10.100.1.9", devices_map, [], auth_choices, max_deep=3) # limit the depts
+    # or
+    browse_cisco_network("10.100.1.9", devices_map, [], auth_choices, max_deep=3, verbose=False) # and do not print anything
   except Exception as msg:
     print "unable to browse network, msg='%s'"%(msg)
     sys.exit()
