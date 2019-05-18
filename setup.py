@@ -12,7 +12,7 @@ setup( name='ciscomapper',
     "ciscotelnet>=0.1.1"
   ],
   dependency_links=[
-    "git+ssh://git@github.com/sergeyzelyukin/cisco-telnet.git#egg=ciscotelnet"
+    "git+https://github.com/sergeyzelyukin/cisco-telnet.git@v0.1.4#egg=ciscotelnet"
   ],
   classifiers=[
   'Programming Language :: Python',
