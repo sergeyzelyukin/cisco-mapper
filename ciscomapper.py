@@ -105,6 +105,8 @@ def browse_cisco_network(host, devices_map, skip_neighbors, auth_tokens, deep=0,
 
 
 def print_cisco_network(devices_map):
+  """ This function draws network scheme hierarchically
+  """
   def print_hierarchy(board_id, deep, indent):
     print indent*deep + devices_map[board_id]["hostname"] + "(" + devices_map[board_id]["ip"] + ")" # print current device
     for child_board_id in sorted(devices_map[board_id]["children"], key=lambda b_id: (len(devices_map[b_id]["children"]), devices_map[b_id]["hostname"])): # sort kids

@@ -4,14 +4,15 @@ import ciscotelnet
 import yaml
 import json
 import sys
-from ciscomapper import *
+from ciscomapper import browse_cisco_network, print_cisco_network
 
 
 if __name__ == "__main__":
   ciscotelnet.WAIT_TIMEOUT = 60 # IMPORTANT, module requirement
 
   """ 
-  specify auth tokens here:
+  variour devices could have different login credentials,
+  specify all possible auth tokens here:
   auth_choices = [
     {"final_mode":ciscotelnet.MODE_ENABLE, "user":"mary", "user_pass":"12345", "enable_pass":"none", "line_pass":"none"},
     {"final_mode":ciscotelnet.MODE_EXEC, "user":"peter", "user_pass":"qwerty", "enable_pass":"none", "line_pass":"none"},
@@ -26,7 +27,7 @@ if __name__ == "__main__":
   # run sometimes to be updated with network scheme 
   devices_map = {} 
   try:
-    browse_cisco_network("c9", devices_map, [], auth_choices, max_deep=1)
+    browse_cisco_network("10.100.1.9", devices_map, [], auth_choices, max_deep=3)
   except Exception as msg:
     print "unable to browse network, msg='%s'"%(msg)
     sys.exit()
