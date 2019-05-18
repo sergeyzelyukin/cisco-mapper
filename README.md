@@ -16,7 +16,7 @@ dictionary1["FD0777888"]["hostname"]	= "R99"
 Just calling the:
 <pre>
 for board_id in dictionary1.keys():
-	print dictionary1[board_id]["hostname"],
+	print dictionary1[board_id]["hostname"]
 	print dictionary1[board_id]["ip"]
 </pre>
 you will have all cisco devices in you network.
@@ -38,4 +38,7 @@ C9 (10.10.9.254)
                         R12 (10.17.40.221)
                 C13 (10.20.45.13)
                         R9 (10.12.5.37)
-</pre>>
+</pre>
+
+Please find examples in sample.py
+
