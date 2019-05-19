@@ -13,6 +13,7 @@ dictionary1["CAT111222"]["hostname"]	= "R1"
 dictionary1["CAT111222"]["ip"]		= "192.168.10.99"
 dictionary1["CAT111222"]["depths"]	= "3"
 dictionary1["CAT111222"]["children"]	= ["CHK333555", "FD0777888"]
+...
 dictionary1["CHK333555"]["hostname"]	= "C5"
 ...
 dictionary1["FD0777888"]["hostname"]	= "R99"
