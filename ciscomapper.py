@@ -13,7 +13,7 @@ def from_string(s):
   return reduce(lambda a,b: a<<8 | b, map(int, s.split(".")))
 
 
-def browse_cisco_network(host, devices_map, skip_neighbors, auth_tokens, deep=0, max_deep=0, verbose=True, indent="\t"):
+def browse_cisco_network(host, devices_map, skip_neighbors, auth_tokens, deep=0, max_deep=0, verbose=True, indent="\t", call_for_every_device=None):
   """This function logs in to cisco device,
   gets its board id (to use it as an unique identifier for the device),
   gets its hostname (for human readability),
@@ -57,6 +57,9 @@ def browse_cisco_network(host, devices_map, skip_neighbors, auth_tokens, deep=0,
         if board_id not in devices_map.keys():  # if we meet this device for the 1st time
           if verbose:
             print indent*deep+hostname+" ("+highest_ip+")" # print while browsing
+          if call_for_every_device:             
+            call_for_every_device(hostname, highest_ip, auth_token) # call specified function for every device, with hostname, ip and auth_token params
+
           devices_map[board_id] = {}
           devices_map[board_id]["hostname"] = hostname
           devices_map[board_id]["ip"] = highest_ip
@@ -94,7 +97,7 @@ def browse_cisco_network(host, devices_map, skip_neighbors, auth_tokens, deep=0,
               if neighbor_ip not in skip_neighbors:
                 try:
                   # call myself for each neighbor (increase depths)
-                  neighbor_board_id = browse_cisco_network(neighbor_ip, devices_map, skip_neighbors, new_auth_tokens, deep+1, max_deep, verbose, indent)
+                  neighbor_board_id = browse_cisco_network(neighbor_ip, devices_map, skip_neighbors, new_auth_tokens, deep+1, max_deep, verbose, indent, call_for_every_device)
                   devices_map[board_id]["children"].append(neighbor_board_id) # no exception occured, so save the neighbor as a child
                 except:
                   skip_neighbors.append(neighbor_ip) # bad neighbor, skip this ip next time if we meet it again
@@ -109,7 +112,7 @@ def print_cisco_network(devices_map):
   """ This function draws network scheme hierarchically
   """
   def print_hierarchy(board_id, deep, indent):
-    print indent*deep + devices_map[board_id]["hostname"] + "(" + devices_map[board_id]["ip"] + ")" # print current device
+    print indent*deep + devices_map[board_id]["hostname"] + " (" + devices_map[board_id]["ip"] + ")" # print current device
     for child_board_id in sorted(devices_map[board_id]["children"], key=lambda b_id: (len(devices_map[b_id]["children"]), devices_map[b_id]["hostname"])): # sort kids
       print_hierarchy(child_board_id, deep+1, indent) # call myself for the child
 
