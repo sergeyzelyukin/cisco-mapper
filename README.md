@@ -1,7 +1,7 @@
 # cisco-mapper
 Draw the scheme of your cisco network, all you need is telnet access and cdp enabled.
 
-IMPORTANT: Before running this, please make sure that CDP is disabled on all untrusted ports. If someone pretends as a CDP neighbor, it can steal all your passwords! Use this approach at your own risk!
+IMPORTANT: Before running this, please make sure that CDP is disabled on all untrusted ports. If someone pretends as a CDP neighbor, he/she can steal all your passwords! Use this approach at your own risk!
 
 First of all, please, install "ciscotelnet" module:
 <pre>
@@ -9,7 +9,12 @@ pip install git+https://github.com/sergeyzelyukin/cisco-telnet.git
 </pre>
 Now you can use this module.
 
-Calling "browse_cisco_network(start_ip, dictionary1, [], auth_tokens)" function, you will finally have a dictionary like:
+Calling the: 
+<pre>
+browse_cisco_network(start_ip, dictionary1, [], auth_tokens)
+</pre>
+function, you will finally have a dictionary like:
+
 <pre>
 dictionary1["CAT111222"]["hostname"]	= "R1"
 dictionary1["CAT111222"]["ip"]		= "192.168.10.99"
@@ -32,7 +37,11 @@ you will have all cisco devices in you network.
 
 You can save this dictionary to yaml or json file and next time preload it, instead of new browsing.
 
-Having this dictionary, you can call "print_cisco_network(dictionary1)" and draw scheme like this:
+Having this dictionary, you can call: 
+<pre>
+print_cisco_network(dictionary1) 
+</pre>
+and draw scheme like this:
 <pre>
 C9 (10.10.9.254)
         C6 (10.20.0.6)
@@ -55,7 +64,10 @@ change_root(dictionary1, "CAT01234567")
 print_cisco_network(dictionary1, show_ip=False) 
 </pre>
 
-You should specify the board_id value of new root device to uniquely identify it. The board_id can be found directly in the dictionary (it is a key) or can be printed with "print_cisco_network(dictionary1, show_board_id=True)".
+You should specify the board_id value of new root device to uniquely identify it. The board_id can be found directly in the dictionary (it is a key) or can be printed with:
+<pre>
+print_cisco_network(dictionary1, show_board_id=True)
+</pre>
 
 Please find examples in sample.py.
 
