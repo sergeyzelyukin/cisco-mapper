@@ -2,6 +2,7 @@
 
 import ciscotelnet
 import re
+import sys
 
 
 def from_string(s):
@@ -96,7 +97,7 @@ def browse_cisco_network(host, devices_map, skip_neighbors, auth_tokens, deep=0,
               neighbor_ip = m.group(1)
               if neighbor_ip not in skip_neighbors:
                 try:
-                  # call myself for each neighbor (increase depths)
+                  # call myself for each neighbor (increase depth)
                   neighbor_board_id = browse_cisco_network(neighbor_ip, devices_map, skip_neighbors, new_auth_tokens, deep+1, max_deep, verbose, indent, call_for_every_device)
                   devices_map[board_id]["children"].append(neighbor_board_id) # no exception occured, so save the neighbor as a child
                 except:
@@ -107,15 +108,66 @@ def browse_cisco_network(host, devices_map, skip_neighbors, auth_tokens, deep=0,
     raise(Exception("unable to log in to '%s'"%(host))) # no chance to authenticate, raise to parent call
 
 
-
-def print_cisco_network(devices_map):
-  """ This function draws network scheme hierarchically
+def change_root(devices_map, new_root_border_id):
   """
-  def print_hierarchy(board_id, deep, indent):
-    print indent*deep + devices_map[board_id]["hostname"] + " (" + devices_map[board_id]["ip"] + ")" # print current device
+  This function sets the specified device as a root
+  and corrects all hierarchy taking new root in account
+  """
+  def go_down_and_increase_depth(board_id, initial_depth):
+    """
+    This subfunction walks down the tree
+    and increases the "depths" values for children.
+    This keeps the hierarchy, just resets "depths" to new values
+    """
+    devices_map[board_id]["depths"] = initial_depth # set new depth for the device
+    for child_board_id in devices_map[board_id]["children"]: 
+      go_down_and_increase_depth(child_board_id, initial_depth+1) # call itself for each child with the increased depth
+
+  def find_father(some_board_id):
+    """
+    This subfunction returns ancestor for the specified device (if available)
+    """
+    for board_id in devices_map.keys(): # all devices
+      for child_board_id in devices_map[board_id]["children"]: # their children
+        if child_board_id == some_board_id: # if the device is in the list
+          return board_id # we found the ancestor
+    return None # or there is no ancestor (the specified device is already the root)
+
+  postponed_relation_changes=[] # something the script cannot do immediately because it can break the algorithm
+  b_id = new_root_border_id
+  depth = 0
+  while True:
+    father_b_id = find_father(b_id)
+    if father_b_id:
+      devices_map[father_b_id]["children"].remove(b_id)  # cut the tree above the current device - remove itself from the list of children at the ancestor 
+      postponed_relation_changes.append({"father":b_id, "child":father_b_id}) # set up the ancestor as a child later
+    go_down_and_increase_depth(b_id, depth) # resets depth values in tree below the current device
+    if not father_b_id:
+      break # we have reached old root, branches already treated, so we can stop
+    b_id = father_b_id  
+    depth += 1
+
+  for new_relation in postponed_relation_changes:
+    devices_map[new_relation["father"]]["children"].append(new_relation["child"])  # setup new hierarchy downwards the tree
+
+
+
+def print_cisco_network(devices_map, show_ip=True, show_board_id=False):
+  """ This function draws network scheme hierarchically,
+  it can optionally show the highest ip of each device and/or its board id.
+  Board id is needed to recompile tree with new root. 
+  """
+  def print_hierarchy(board_id, deep, indent, show_ip, show_board_id):
+    details = ""
+    if show_ip:
+      details += " (" + devices_map[board_id]["ip"] + ")"
+    if show_board_id:
+      details += " (" + board_id + ")"
+
+    print indent*deep + devices_map[board_id]["hostname"] + details # print current device
     for child_board_id in sorted(devices_map[board_id]["children"], key=lambda b_id: (len(devices_map[b_id]["children"]), devices_map[b_id]["hostname"])): # sort kids
-      print_hierarchy(child_board_id, deep+1, indent) # call myself for the child
+      print_hierarchy(child_board_id, deep+1, indent, show_ip, show_board_id) # call myself for the child
 
   root_border_id = sorted(devices_map.keys(), key=lambda b_id: devices_map[b_id]["depths"])[0] # looking for the root device
-  print_hierarchy(root_border_id, 0, "\t") # let's start printing from the root
+  print_hierarchy(root_border_id, 0, "\t", show_ip, show_board_id) # let's start printing from the root
 

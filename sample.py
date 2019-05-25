@@ -63,5 +63,11 @@ if __name__ == "__main__":
 
   # and draw it
   print_cisco_network(devices_map) # print text scheme hierarchically
+  print_cisco_network(devices_map, show_ip=True, show_board_id=True) # show details
   
+
+  # if you want to look at the network from other point of view,
+  # you can recompile the hierarchy and print it again
+  change_root(devices_map, "CAT01234567") # tip - save new hierarchy to another json file
+  print_cisco_network(devices_map, show_ip=False) 
 

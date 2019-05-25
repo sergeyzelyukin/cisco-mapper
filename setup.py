@@ -3,7 +3,7 @@
 from setuptools import setup
 
 setup( name='ciscomapper',
-  version='0.1.2',
+  version='0.1.3',
   description='Draw the scheme of your cisco network. All you need is telnet access and cdp enabled',
   maintainer_email='sergey.zelyukin@gmail.com',
   keywords='cisco cdp network browser mapper crawler',
