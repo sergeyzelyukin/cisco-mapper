@@ -48,6 +48,22 @@ if __name__ == "__main__":
     print "unable to browse network, msg='%s'"%(msg)
     sys.exit()
 
+  # By default browse_cisco_network() function uses "depths first" algorithm
+  # it is useful for drawing instant (while crawling) schemes, 
+  # but it can lead to wrong schemes in ring topologies.
+  # There is also "breadth first" algorithm, which creates schemes much closer to reality
+  # but it cannot draw hierarchy during network crawling.
+  # Both methods could be called directly:
+  devices_map = {} 
+    try:
+      browse_cisco_network_depth1st("10.100.1.9", devices_map, [], auth_choices) # "depth first" algorithm
+      # or
+      browse_cisco_network_breadth1st("10.100.1.9", devices_map, [], auth_choices) # "breadth first" algorithm
+    except Exception as msg:
+      print "unable to browse network, msg='%s'"%(msg)
+      sys.exit()
+
+
   # save map to yaml for future use
   with open("cisco_network_map.yaml.txt", "w") as fh:
     yaml.dump(devices_map, fh, default_flow_style=False)
@@ -70,4 +86,6 @@ if __name__ == "__main__":
   # you can recompile the hierarchy and print it again
   change_root(devices_map, "CAT01234567") # tip - save new hierarchy to another json file
   print_cisco_network(devices_map, show_ip=False) 
+
+
 
