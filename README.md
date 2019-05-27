@@ -69,8 +69,8 @@ You should specify the board_id value of new root device to uniquely identify it
 print_cisco_network(dictionary1, show_board_id=True)
 </pre>
 
-By default browse_cisco_network() function uses "depths first" algorithm it is useful for drawing instant (while crawling) schemes, but it can lead to wrong schemes in ring topologies.
-There is also "breadth first" algorithm, which creates schemes much closer to reality, but it cannot draw hierarchy during network crawling.
+By default "browse_cisco_network()" function uses "depths first" algorithm, it is useful for drawing instant (while crawling) schemes, but it can lead to wrong schemes in ring topologies.<br>
+There is also "breadth first" algorithm, which creates schemes much closer to reality, but it cannot draw hierarchy during the network crawling.<br>
 Both methods could be called directly:
 <pre>
 browse_cisco_network_depth1st(start_ip, dictionary1, [], auth_tokens) # "depth first" algorithm
@@ -79,7 +79,9 @@ browse_cisco_network_breadth1st(start_ip, dictionary1, [], auth_tokens) # "bread
 </pre>
 
 Full params list:
+<pre>
 browse_cisco_network(start_ip, devices_map, skip_neighbors, auth_tokens, max_deep, verbose, call_for_every_device)
+</pre>
 
 Please find examples in sample.py.
 
